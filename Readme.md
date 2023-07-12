@@ -1,7 +1,7 @@
 ## Installation
 
-- `git clone https://github.com/Taufik0101/test.git`
-- `cd test/`
+- `git clone https://github.com/Taufik0101/CC-Nicepay.git`
+- `cd CC-Nicepay/`
 - `go get ./...`
 - `go run server.go
 
