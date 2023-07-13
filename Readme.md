@@ -17,3 +17,5 @@
 
 ## IMPORT POSTMAN
 import KASPIN.postman_collection.json ke postman
+## ATAU
+import url dalam file API KASPIN CC.txt
