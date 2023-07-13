@@ -15,8 +15,5 @@
 - Ganti params request timestamp, txid, referenceno, amt sesuai dengan response registrasi CC
 - sisanya biarkan saja
 
-## API POSTMAN
-https://api.postman.com/collections/19199067-e8e78a70-7b16-45b6-a26f-bc639fd3ec0e?access_key=PMAT-01H58A5V0949NGFQXEEHRTR3SV
-
-## ATAU
+## IMPORT POSTMAN
 import KASPIN.postman_collection.json ke postman
