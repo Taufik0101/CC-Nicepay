@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "ba5bb695-748d-4dbd-b5cb-cc1d0e079d66",
+		"name": "KASPIN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28521197"
+	},
+	"item": [
+		{
+			"name": "Registration CC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"pm.environment.set(\"timestampTrx\", moment().format(\"YYYYMMDDHHMMSS\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\" : 20000,\r\n    \"name\": \"Paijo\",\r\n    \"phone\": \"08123456789\",\r\n    \"email\" : \"test@gmail.com\",\r\n    \"address\": \"Alamat\",\r\n    \"city\": \"Yogyakarta\",\r\n    \"state\" : \"Yogyakarta\",\r\n    \"postNumber\": 789213,\r\n    \"country\": \"Indonesia\",\r\n    \"cartData\": {\r\n        \"count\": 2,\r\n        \"item\": [\r\n            {\r\n            \"img_url\": \"http://img.aaa.com/ima1.jpg\",  \r\n            \"goods_name\": \"Item 1 Name\",\r\n            \"goods_detail\": \"Item 1 Detail\",\r\n            \"goods_amt\": 700\r\n            },  \r\n            {\r\n                \"img_url\": \"http://img.aaa.com/ima2.jpg\",\r\n                \"goods_name\": \"Item 2 Name\",\r\n                \"goods_detail\": \"Item 2 Detail\",\r\n                \"goods_amt\": 300\r\n            }  \r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/payment/registration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"payment",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment CC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Get Timestamp//\r",
+							"var moment = require('moment');\r",
+							"pm.environment.set(\"timestampTrx\", moment().format(\"YYYYMMDDHHMMSS\"));\r",
+							"// var timestampTrx =\"20201123151515\";\r",
+							"var timestampTrx = pm.environment.get(\"timestampTrx\");\r",
+							"\r",
+							"//Initiate variables//\r",
+							"var cryptlib = require('crypto-js');\r",
+							"var iMid = \"IONPAYTEST\";\r",
+							"var merchantKey = \"33F49GnCMS1mFYlGXisbUDzVf2ATWCl9k3R++d5hDd3Frmuos/XLx8XhXpe+LDYAbpGKZYSwtlyyLOtS/8aD7A==\";\r",
+							"var refNo = \"ord\"+timestampTrx;\r",
+							"var amount = \"20000\";\r",
+							"\r",
+							"\r",
+							"//Generate merchantToken//\r",
+							"var merchantData = timestampTrx+iMid+refNo+amount+merchantKey;\r",
+							"var merTok = CryptoJS.SHA256(merchantData).toString(CryptoJS.enc.Hex);\r",
+							"pm.environment.set(\"merTok\", merTok);\r",
+							"pm.environment.set(\"iMid\", iMid);\r",
+							"pm.environment.set(\"amount\", amount);\r",
+							"pm.environment.set(\"refNo\", refNo);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"timeStamp\":\"20230713040319\",\r\n\t\"tXid\":\"IONPAYTEST01202307130403201633\",\r\n\t\"referenceNo\":\"ORD0476\",\r\n\t\"amt\":\"20000\",\r\n    \"cardNo\" : \"4111111111111111\",\r\n    \"cardExpYymm\": \"2308\",\r\n    \"cardCvv\" : \"123\",\r\n    \"cardHolderNm\" : \"Paijo\",\r\n    \"callBackUrl\": \"https://e2633f692dee-15630590192180933391.ngrok-free.app/callback\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5050/payment/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"payment",
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inquiry CC",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Get Timestamp//\r",
+							"var moment = require('moment');\r",
+							"pm.environment.set(\"timestampTrx\", moment().format(\"YYYYMMDDHHMMSS\"));\r",
+							"var timestampTrx = pm.environment.get(\"timestampTrx\");\r",
+							"var timestampTrx = \"20200127140045\";\r",
+							"//Initiate variables//\r",
+							"var cryptlib = require('crypto-js');\r",
+							"var iMid = \"IONPAYTEST\";\r",
+							"var merchantKey = \"33F49GnCMS1mFYlGXisbUDzVf2ATWCl9k3R++d5hDd3Frmuos/XLx8XhXpe+LDYAbpGKZYSwtlyyLOtS/8aD7A==\";\r",
+							"var refNo = \"ord20230712150705\";\r",
+							"var amount = \"20000\";\r",
+							"\r",
+							"//Generate merchantToken//\r",
+							"var merchantData = timestampTrx+iMid+refNo+amount+merchantKey;\r",
+							"var merTok = CryptoJS.SHA256(merchantData).toString(CryptoJS.enc.Hex);\r",
+							"pm.environment.set(\"merTok\", merTok);\r",
+							"pm.environment.set(\"iMid\", iMid);\r",
+							"pm.environment.set(\"amount\", amount);\r",
+							"pm.environment.set(\"refNo\", refNo);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"timeStamp\":\"20230713043239\",\r\n\t\"tXid\":\"IONPAYTEST01202307130432391639\",\r\n\t\"referenceNo\":\"ORD5896\",\r\n\t\"amt\":\"20000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/payment/inquiry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"payment",
+						"inquiry"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
